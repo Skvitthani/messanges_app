@@ -13,6 +13,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  is_online: {
+    type: Boolean,
+    require: true,
+  },
   image: {
     type: String,
     require: true,

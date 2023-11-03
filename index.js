@@ -8,10 +8,34 @@ const connectDb = require("./config/dbConnection");
 
 const dotenv = require("dotenv").config();
 
+const User = require("./models/user");
+const Message = require("./models/message");
 const app = express();
-const port = 5002;
+const port = 3000;
 const cors = require("cors");
 app.use(cors());
+
+const http = require("http").Server(app);
+
+const socketIO = require("socket.io")(http, {
+  cors: {
+    origin: "http://192.168.24.107:3000",
+  },
+});
+
+socketIO.on("connection", async (socket) => {
+  socket.on("newChat", async (obj) => {
+    const { senderId, recepientId } = obj;
+    console.log("obj", obj);
+    const messages = await Message.find({
+      $or: [
+        { senderId: senderId, recepientId: recepientId },
+        { senderId: recepientId, recepientId: senderId },
+      ],
+    }).populate("senderId", "_id, name");
+    socket.broadcast.emit("loadNewchat", messages);
+  });
+});
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -20,15 +44,11 @@ const jwt = require("jsonwebtoken");
 
 connectDb();
 
-app.listen(port, () => {
+http.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
 
-const User = require("./models/user");
-const Message = require("./models/message");
-
 //End point for Register User
-
 app.post("/register", async (req, res) => {
   const { name, email, password, image } = req.body;
 
@@ -37,7 +57,7 @@ app.post("/register", async (req, res) => {
     res.json({ message: "Email already exist" });
   } else {
     //Create a new user object
-    const newUser = User({ name, email, password, image });
+    const newUser = User({ name, email, password, image, is_online: null });
 
     //save user to database
     newUser
@@ -80,7 +100,8 @@ app.post("/login", (req, res) => {
       }
 
       const token = createToken(user._id);
-      res.status(200).json({ token });
+
+      res.status(200).json({ user: user, token: token });
     })
     .catch((error) => {
       console.log("error on  in finding the user", error);
@@ -168,7 +189,7 @@ app.get("/accepted-friend-request", async (req, res) => {
   const id = req.query.userId;
   try {
     const user = await User.findById(id)
-      .populate("friends", "name email image")
+      .populate("friends", "name email image is_online")
       .lean();
     const friendRequest = user.friends;
     res.json(friendRequest);
@@ -208,7 +229,7 @@ app.post("/messages", upload.single("imageFile"), async (req, res) => {
     });
 
     await newMessage.save();
-    res.status(200).json({ message: "Message sent Successfully" });
+    res.status(200).json(newMessage);
   } catch (error) {
     console.log("error on message api", error);
     res.status(500).json({ error: "Internal Server Error" });

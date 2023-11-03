@@ -49,6 +49,18 @@ const UserChats = ({item, onPress}) => {
           {' '}
           {lastMessage && formatTime(lastMessage?.timeStamp)}
         </Text>
+        {item?.is_online ? (
+          <View
+            style={{
+              height: 20,
+              width: 20,
+              backgroundColor: 'green',
+              borderRadius: 50,
+              alignSelf: 'flex-end',
+              marginTop: 5,
+            }}
+          />
+        ) : null}
       </View>
     </TouchableOpacity>
   );

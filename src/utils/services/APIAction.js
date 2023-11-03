@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-var base_URL = 'http://192.168.24.107:5002';
+var base_URL = 'http://192.168.24.107:3000';
 
 export const registerUserApi = async request => {
   return new Promise(async (resolve, reject) => {
@@ -115,12 +115,7 @@ export const messageAPI = async request => {
     try {
       const response = await axios.post(`${base_URL}/messages`, request);
       console.log('response', response?.data);
-      // const response = await fetch(`${base_URL}/messages`, {
-      //   method: 'POST',
-      //   body: request,
-      //   headers: {'Content-Type': 'application/json'},
-      // });
-      // const data = await response.json();
+
       resolve(response?.data);
     } catch (error) {
       console.log('error on messageAPI', error);

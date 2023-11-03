@@ -1,6 +1,6 @@
 import jwt_decode from 'jwt-decode';
 import Users from '../components/Users';
-import {StyleSheet, View} from 'react-native';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
 import {UserType} from '../components/userContext';
 import {getUerApi} from '../utils/services/APIAction';
 import React, {useContext, useEffect, useState} from 'react';
@@ -16,19 +16,20 @@ const HomeScreen = () => {
       const token = await AsyncStorage.getItem('token');
       const decoded = jwt_decode(token);
       const userId = decoded.userId;
+
       setUserId(userId);
       const getUser = await getUerApi(userId);
       setUserData(getUser);
     })();
   }, []);
   return (
-    <View>
+    <SafeAreaView>
       <View style={styles.userView}>
         {userData?.map((item, index) => (
           <Users item={item} key={index} />
         ))}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

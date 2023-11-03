@@ -1,5 +1,5 @@
 import {UserType} from '../components/userContext';
-import {StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import FriendRequest from '../components/FriendRequest';
 import React, {useContext, useEffect, useState} from 'react';
 import {acceptFriendAPI, getfriendRequest} from '../utils/services/APIAction';
@@ -34,7 +34,7 @@ const FriendScreen = ({navigation}) => {
   };
 
   return (
-    <View style={styles?.container}>
+    <SafeAreaView style={styles?.container}>
       {friends?.length > 0 ? <Text>Your Friend Request</Text> : null}
       {friends?.map((item, index) => (
         <FriendRequest
@@ -43,7 +43,7 @@ const FriendScreen = ({navigation}) => {
           onAcceptFriendrequest={onAcceptFriendrequest}
         />
       ))}
-    </View>
+    </SafeAreaView>
   );
 };
 

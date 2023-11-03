@@ -12,13 +12,13 @@ import {loginUserApi} from '../utils/services/APIAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = ({navigation}) => {
-  const [email, setEmail] = useState('sanket@gmail.com');
-  const [password, setPassword] = useState('sanket');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   useEffect(() => {
     const fetchToken = async () => {
       const token = await AsyncStorage.getItem('token');
       if (token) {
-        navigation.navigate('Home');
+        navigation.navigate('MyTab');
       }
     };
     fetchToken();
@@ -31,7 +31,8 @@ const LoginScreen = ({navigation}) => {
     };
     const res = await loginUserApi(request);
     if (res?.token) {
-      navigation.navigate('Home');
+      navigation.navigate('MyTab');
+      AsyncStorage.setItem('userDetails', JSON.stringify(res?.user));
       AsyncStorage.setItem('token', res.token);
       setEmail('');
       setPassword('');

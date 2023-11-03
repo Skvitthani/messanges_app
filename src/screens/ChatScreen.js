@@ -2,7 +2,12 @@ import UserChats from '../components/UserChats';
 import {UserType} from '../components/userContext';
 import {getAllFriends} from '../utils/services/APIAction';
 import React, {useContext, useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 
 const ChatScreen = ({navigation}) => {
   const {userId} = useContext(UserType);
@@ -15,19 +20,21 @@ const ChatScreen = ({navigation}) => {
     })();
   }, []);
   return (
-    <ScrollView>
-      <TouchableOpacity>
-        {acceptedFriends?.map((item, index) => (
-          <UserChats
-            key={index}
-            item={item}
-            onPress={item =>
-              navigation.navigate('Messages', {receiverId: item})
-            }
-          />
-        ))}
-      </TouchableOpacity>
-    </ScrollView>
+    <SafeAreaView>
+      <ScrollView>
+        <TouchableOpacity>
+          {acceptedFriends?.map((item, index) => (
+            <UserChats
+              key={index}
+              item={item}
+              onPress={item =>
+                navigation.navigate('Messages', {receiverId: item})
+              }
+            />
+          ))}
+        </TouchableOpacity>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

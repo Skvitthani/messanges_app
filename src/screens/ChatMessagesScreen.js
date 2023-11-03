@@ -1,30 +1,30 @@
-import {UserType} from '../components/userContext';
 import {
   Text,
   View,
   Image,
-  ScrollView,
   StyleSheet,
+  ScrollView,
   TouchableOpacity,
   KeyboardAvoidingView,
 } from 'react-native';
 import React, {
-  useContext,
-  useEffect,
-  useLayoutEffect,
   useRef,
   useState,
+  useEffect,
+  useContext,
+  useLayoutEffect,
 } from 'react';
 import {
-  deleteMessageAPI,
-  getMessagesAPI,
-  getReceiverProfile,
   messageAPI,
+  getMessagesAPI,
+  deleteMessageAPI,
+  getReceiverProfile,
 } from '../utils/services/APIAction';
 import images from '../utils/ImageConst';
-import MessageInputView from '../components/MessageInputView';
+import {UserType} from '../components/userContext';
 import EmojiSelector from 'react-native-emoji-selector';
 import ImagePicker from 'react-native-image-crop-picker';
+import MessageInputView from '../components/MessageInputView';
 
 const ChatMessagesScreen = ({route, navigation}) => {
   const {userId} = useContext(UserType);
@@ -141,16 +141,18 @@ const ChatMessagesScreen = ({route, navigation}) => {
     return new Date(time).toLocaleString('en-US', options);
   };
 
-  const onCameraPress = async () => {
-    ImagePicker.openPicker({
-      width: 300,
-      height: 400,
-      cropping: true,
-    }).then(image => {
-      console.log(image);
-      onSendTextMessage('image', image?.path);
-    });
-  };
+  // const onCameraPress = async () => {
+  //   ImagePicker.openPicker({
+  //     width: 300,
+  //     height: 400,
+  //     cropping: true,
+  //     includeBase64: true,
+  //   }).then(image => {
+  //     console.log('imageimageimageiomaofmie', image);
+  //     console.log('imageimageimageiomaofmie', image?.path);
+  //     onSendTextMessage('image', image?.path);
+  //   });
+  // };
 
   const onLogMessagePress = async message => {
     const isSelected = selectedMessages?.includes(message._id);
@@ -207,40 +209,40 @@ const ChatMessagesScreen = ({route, navigation}) => {
               </TouchableOpacity>
             );
           }
-          if (item.messageType === 'image') {
-            const baseURL =
-              'file:///Users/mac/Documents/SVDev/messanger_backend/files/';
-            const imageUrl = item.imageUrl;
-            const filename = imageUrl.split('/').pop();
-            const source = baseURL + filename;
-            console.log('source', source);
-            return (
-              <TouchableOpacity
-                key={index}
-                style={[
-                  item?.senderId?._id == userId
-                    ? [
-                        styles.messageBoxView,
-                        {backgroundColor: '#DCF8C6', alignSelf: 'flex-end'},
-                      ]
-                    : [
-                        styles.messageBoxView,
-                        {backgroundColor: 'white', alignSelf: 'flex-start'},
-                      ],
-                ]}>
-                <View>
-                  <Image source={{uri: source}} style={styles.imageMessage} />
-                  <Text style={styles.imageMessageTimeFont}>
-                    {formateTime(item?.timeStamp)}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            );
-          }
+          // if (item.messageType === 'image') {
+          //   const baseURL =
+          //     'file:///Users/mac/Documents/SVDev/messanger_backend/files/';
+          //   const imageUrl = item.imageUrl;
+          //   const filename = imageUrl.split('/').pop();
+          //   const source = baseURL + filename;
+          //   console.log('source', source);
+          //   return (
+          //     <TouchableOpacity
+          //       key={index}
+          //       style={[
+          //         item?.senderId?._id == userId
+          //           ? [
+          //               styles.messageBoxView,
+          //               {backgroundColor: '#DCF8C6', alignSelf: 'flex-end'},
+          //             ]
+          //           : [
+          //               styles.messageBoxView,
+          //               {backgroundColor: 'white', alignSelf: 'flex-start'},
+          //             ],
+          //       ]}>
+          //       <View>
+          //         <Image source={{uri: source}} style={styles.imageMessage} />
+          //         <Text style={styles.imageMessageTimeFont}>
+          //           {formateTime(item?.timeStamp)}
+          //         </Text>
+          //       </View>
+          //     </TouchableOpacity>
+          //   );
+          // }
         })}
       </ScrollView>
       <MessageInputView
-        onCameraPress={onCameraPress}
+        // onCameraPress={onCameraPress}
         bottomInputView={{marginBottom: showEmojiSelector ? 0 : 25}}
         value={message}
         onChange={txt => setMessage(txt)}

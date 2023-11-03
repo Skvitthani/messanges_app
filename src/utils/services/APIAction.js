@@ -110,6 +110,7 @@ export const getReceiverProfile = async request => {
 };
 
 export const messageAPI = async request => {
+  console.log('request', request);
   return new Promise(async (resolve, reject) => {
     try {
       const response = await axios.post(`${base_URL}/messages`, request);

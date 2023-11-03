@@ -14,13 +14,6 @@ const MessageInputView = ({
 }) => {
   return (
     <View style={[styles.bottomInputView, bottomInputView]}>
-      {/* <Entypo
-        onPress={onEmojiPress}
-        size={24}
-        color="gray"
-        name="emoji-happy"
-        style={{marginRight: 5}}
-      /> */}
       <TouchableOpacity onPress={onEmojiPress}>
         <Image
           source={images.emoji_happy}
@@ -34,12 +27,10 @@ const MessageInputView = ({
         placeholder={'Type you message ...'}
       />
       <View style={styles.cameraViewStyle}>
-        <TouchableOpacity onPress={onCameraPress}>
+        {/* <TouchableOpacity onPress={onCameraPress}>
           <Image source={images.camera} style={{height: 25, width: 27}} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <Image source={images.mic} style={{height: 25, width: 27}} />
-        {/* <Entypo name="camera" size={24} color="gray" onPress={onCameraPress} />
-        <Feather name="mic" size={24} color="gray" /> */}
       </View>
       <ButtonConst
         disabled={value === ''}

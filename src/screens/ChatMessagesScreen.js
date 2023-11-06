@@ -2,11 +2,11 @@ import {
   Text,
   View,
   Image,
+  FlatList,
   StyleSheet,
-  ScrollView,
+  SafeAreaView,
   TouchableOpacity,
   KeyboardAvoidingView,
-  SafeAreaView,
 } from 'react-native';
 import React, {
   useRef,
@@ -166,48 +166,47 @@ const ChatMessagesScreen = ({route, navigation}) => {
 
   return (
     <SafeAreaView style={styles.mainView}>
-      <KeyboardAvoidingView style={{flex: 1}} behavior="padding" enabled>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
+      <KeyboardAvoidingView style={{flex: 1}}>
+        <FlatList
           ref={scrollViewRef}
-          contentContainerStyle={{flexGrow: 0}}
           onContentSizeChange={() =>
             scrollViewRef.current.scrollToEnd({animated: false})
-          }>
-          {getMessages?.map((item, index) => {
-            if (item?.messageType == 'text') {
-              const isSelected = selectedMessages.includes(item._id);
-              return (
-                <TouchableOpacity
-                  onLongPress={() => onLogMessagePress(item)}
-                  key={index}
-                  style={[
-                    item?.senderId?._id == userId
-                      ? [
-                          styles.messageBoxView,
-                          {backgroundColor: '#DCF8C6', alignSelf: 'flex-end'},
-                        ]
-                      : [
-                          styles.messageBoxView,
-                          {backgroundColor: 'white', alignSelf: 'flex-start'},
-                        ],
-                    isSelected && {width: '100%', backgroundColor: '#F0FFFF'},
-                  ]}>
-                  <Text
-                    style={{
-                      fontSize: 13,
-                      textAlign: isSelected ? 'right' : 'left',
-                    }}>
-                    {item?.message}
-                  </Text>
-                  <Text style={styles.messageTimeText}>
-                    {formateTime(item?.timeStamp)}
-                  </Text>
-                </TouchableOpacity>
-              );
-            }
-          })}
-        </ScrollView>
+          }
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{flexGrow: 1, justifyContent: 'flex-end'}}
+          data={getMessages}
+          renderItem={({item, index}) => {
+            const isSelected = selectedMessages.includes(item._id);
+            return (
+              <TouchableOpacity
+                onLongPress={() => onLogMessagePress(item)}
+                key={index}
+                style={[
+                  item?.senderId?._id == userId
+                    ? [
+                        styles.messageBoxView,
+                        {backgroundColor: '#DCF8C6', alignSelf: 'flex-end'},
+                      ]
+                    : [
+                        styles.messageBoxView,
+                        {backgroundColor: 'white', alignSelf: 'flex-start'},
+                      ],
+                  isSelected && {width: '100%', backgroundColor: '#F0FFFF'},
+                ]}>
+                <Text
+                  style={{
+                    fontSize: 13,
+                    textAlign: isSelected ? 'right' : 'left',
+                  }}>
+                  {item?.message}
+                </Text>
+                <Text style={styles.messageTimeText}>
+                  {formateTime(item?.timeStamp)}
+                </Text>
+              </TouchableOpacity>
+            );
+          }}
+        />
         <View style={styles.bottomInputView}>
           <InputText
             value={message}

@@ -21,6 +21,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  fcmToken: {
+    type: String,
+    require: true,
+  },
   friendRequests: [
     {
       type: mongoose.Schema.Types.ObjectId,

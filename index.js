@@ -26,7 +26,6 @@ const socketIO = require("socket.io")(http, {
 socketIO.on("connection", async (socket) => {
   socket.on("newChat", async (obj) => {
     const { senderId, recepientId } = obj;
-    console.log("obj", obj);
     const messages = await Message.find({
       $or: [
         { senderId: senderId, recepientId: recepientId },
@@ -50,14 +49,21 @@ http.listen(port, () => {
 
 //End point for Register User
 app.post("/register", async (req, res) => {
-  const { name, email, password, image } = req.body;
+  const { name, email, password, image, fcmToken } = req.body;
 
   const getUser = await User.findOne({ email });
   if (getUser) {
     res.json({ message: "Email already exist" });
   } else {
     //Create a new user object
-    const newUser = User({ name, email, password, image, is_online: null });
+    const newUser = User({
+      name,
+      email,
+      password,
+      image,
+      is_online: null,
+      fcmToken,
+    });
 
     //save user to database
     newUser
@@ -83,7 +89,8 @@ const createToken = (userId) => {
 
 // endpoint for login perticular user
 app.post("/login", (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, fcmToken } = req.body;
+  console.log("fcmToken", fcmToken);
   if (!email || !password) {
     return res.status(404).json({ message: "Email and password required" });
   }
@@ -98,6 +105,15 @@ app.post("/login", (req, res) => {
       if (user.password !== password) {
         return res.status(404).json({ message: "Invalid password" });
       }
+      user.fcmToken = fcmToken;
+      user
+        .save()
+        .then((res) => {
+          console.log("res:::", res);
+        })
+        .catch((err) => {
+          console.log("err :::", err);
+        });
 
       const token = createToken(user._id);
 
@@ -285,12 +301,17 @@ app.post("/delete-messages", async (req, res) => {
 app.get("/friend-request/sent", async (req, res) => {
   try {
     const id = req.query.userId;
+    console.log("id", id);
 
     const user = await User.findById(id)
       .populate("sendFriendRequest", "name email image")
       .lean();
-    const sendFriendRequest = user.sendFriendRequest;
-    res.json(sendFriendRequest);
+    console.log("user", user);
+    if (user !== null) {
+      const sendFriendRequest = user.sendFriendRequest;
+      console.log("sendFriendRequest", sendFriendRequest);
+      res.json(sendFriendRequest);
+    }
   } catch (error) {
     console.log("error on get sent friend request", error);
     res.status(500).json({ message: "Internal server error" });

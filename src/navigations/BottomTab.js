@@ -56,8 +56,8 @@ function MyTabBar({state, descriptors, navigation}) {
                   : images?.friends
               }
               style={{
-                height: label == 'Chat' ? 55 : label == 'Home' ? 40 : 45,
-                width: label == 'Chat' ? 55 : label == 'Home' ? 40 : 45,
+                height: label == 'Chat' ? 45 : label == 'Home' ? 35 : 40,
+                width: label == 'Chat' ? 45 : label == 'Home' ? 35 : 40,
                 tintColor: isFocused ? '#fff' : 'gray',
               }}
             />

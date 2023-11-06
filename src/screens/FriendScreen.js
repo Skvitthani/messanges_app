@@ -4,7 +4,7 @@ import FriendRequest from '../components/FriendRequest';
 import React, {useContext, useEffect, useState} from 'react';
 import {acceptFriendAPI, getfriendRequest} from '../utils/services/APIAction';
 
-const FriendScreen = ({navigation}) => {
+const FriendScreen = () => {
   const [friends, setFriends] = useState([]);
   const {userId} = useContext(UserType);
 
@@ -26,7 +26,6 @@ const FriendScreen = ({navigation}) => {
       if (response?.message == 'Friend request accepted sucessfully.') {
         const remove = friends?.filter(ite => ite?._id !== item);
         setFriends(remove);
-        navigation.navigate('Chats');
       }
     } catch (error) {
       console.log('error on onAcceptFriendrequest', error);

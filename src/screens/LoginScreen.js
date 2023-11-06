@@ -9,7 +9,9 @@ import InputText from '../components/InputText';
 import React, {useEffect, useState} from 'react';
 import ButtonConst from '../components/ButtonConst';
 import {loginUserApi} from '../utils/services/APIAction';
+import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -25,9 +27,18 @@ const LoginScreen = ({navigation}) => {
   }, []);
 
   const onLoginPress = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    if (enabled) {
+      var fcmToken = await messaging().getToken();
+      AsyncStorage.setItem('token', JSON.stringify(fcmToken));
+    }
     const request = {
       email: email,
       password: password,
+      fcmToken: fcmToken,
     };
     const res = await loginUserApi(request);
     if (res?.token) {
@@ -43,7 +54,9 @@ const LoginScreen = ({navigation}) => {
 
   return (
     <View style={styles.containerView}>
-      <KeyboardAvoidingView>
+      <KeyboardAwareScrollView
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="always">
         <View style={styles.textView}>
           <Text style={styles.signInFont}>Sign In</Text>
           <Text style={styles.yourAccountFont}>Sign In to Your Account</Text>
@@ -79,7 +92,7 @@ const LoginScreen = ({navigation}) => {
           title={"Don't have an account? Sign up"}
           onPress={() => navigation.navigate('Reigester')}
         />
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
     </View>
   );
 };

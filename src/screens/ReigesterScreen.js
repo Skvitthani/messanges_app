@@ -3,6 +3,9 @@ import InputText from '../components/InputText';
 import ButtonConst from '../components/ButtonConst';
 import {registerUserApi} from '../utils/services/APIAction';
 import {KeyboardAvoidingView, StyleSheet, Text, View} from 'react-native';
+import messaging from '@react-native-firebase/messaging';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const ReigesterScreen = ({navigation}) => {
   const [name, setName] = useState('');
@@ -11,11 +14,20 @@ const ReigesterScreen = ({navigation}) => {
   const [image, setImage] = useState('https://picsum.photos/200');
 
   const onRegisterPress = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    if (enabled) {
+      var fcmToken = await messaging().getToken();
+      AsyncStorage.setItem('token', JSON.stringify(fcmToken));
+    }
     const request = {
       name: name,
       email: email,
       image: image,
       password: password,
+      fcmToken: fcmToken,
     };
     const res = await registerUserApi(request);
     if (res?.message == 'User Entered Sucessfully') {
@@ -29,7 +41,9 @@ const ReigesterScreen = ({navigation}) => {
   };
   return (
     <View style={styles.containerView}>
-      <KeyboardAvoidingView>
+      <KeyboardAwareScrollView
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="always">
         <View style={styles.textView}>
           <Text style={styles.signInFont}>Register</Text>
           <Text style={styles.yourAccountFont}>Register Your Account</Text>
@@ -83,7 +97,7 @@ const ReigesterScreen = ({navigation}) => {
           title={'Already have an account? Sign In'}
           onPress={() => navigation.goBack()}
         />
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
     </View>
   );
 };

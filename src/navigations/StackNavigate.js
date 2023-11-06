@@ -7,6 +7,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import ChatMessagesScreen from '../screens/ChatMessagesScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import FriendScreen from '../screens/FriendScreen';
+import {navigationRef} from './NavigateRef';
 
 const Stack = createNativeStackNavigator();
 const StackNavigate = () => {
@@ -20,7 +22,7 @@ const StackNavigate = () => {
   }, []);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <Stack.Navigator>
         <Stack.Screen
           name="Login"
@@ -35,6 +37,11 @@ const StackNavigate = () => {
         <Stack.Screen
           name="MyTab"
           component={BottomTab}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="FriendScreen"
+          component={FriendScreen}
           options={{headerShown: false}}
         />
         <Stack.Screen name="Messages" component={ChatMessagesScreen} />

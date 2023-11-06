@@ -1,13 +1,13 @@
+import {
+  ScrollView,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
 import UserChats from '../components/UserChats';
 import {UserType} from '../components/userContext';
 import {getAllFriends} from '../utils/services/APIAction';
 import React, {useContext, useEffect, useState} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
 
 const ChatScreen = ({navigation}) => {
   const {userId} = useContext(UserType);

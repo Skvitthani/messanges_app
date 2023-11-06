@@ -1,30 +1,15 @@
-import {
-  Text,
-  View,
-  Alert,
-  StyleSheet,
-  KeyboardAvoidingView,
-} from 'react-native';
+import React, {useState} from 'react';
 import InputText from '../components/InputText';
-import React, {useEffect, useState} from 'react';
 import ButtonConst from '../components/ButtonConst';
 import {loginUserApi} from '../utils/services/APIAction';
 import messaging from '@react-native-firebase/messaging';
+import {Text, View, Alert, StyleSheet} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  useEffect(() => {
-    const fetchToken = async () => {
-      const token = await AsyncStorage.getItem('token');
-      if (token) {
-        navigation.navigate('MyTab');
-      }
-    };
-    fetchToken();
-  }, []);
 
   const onLoginPress = async () => {
     const authStatus = await messaging().requestPermission();

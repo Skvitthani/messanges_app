@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import InputText from '../components/InputText';
+import {StyleSheet, Text, View} from 'react-native';
 import ButtonConst from '../components/ButtonConst';
-import {registerUserApi} from '../utils/services/APIAction';
-import {KeyboardAvoidingView, StyleSheet, Text, View} from 'react-native';
 import messaging from '@react-native-firebase/messaging';
+import {registerUserApi} from '../utils/services/APIAction';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 

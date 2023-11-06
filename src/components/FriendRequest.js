@@ -1,6 +1,6 @@
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import ButtonConst from './ButtonConst';
+import {Image, StyleSheet, Text, TouchableOpacity} from 'react-native';
 
 const FriendRequest = ({item, onAcceptFriendrequest}) => {
   return (

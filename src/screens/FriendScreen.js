@@ -1,12 +1,12 @@
 import {UserType} from '../components/userContext';
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import FriendRequest from '../components/FriendRequest';
+import {SafeAreaView, StyleSheet, Text} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import {acceptFriendAPI, getfriendRequest} from '../utils/services/APIAction';
 
 const FriendScreen = () => {
-  const [friends, setFriends] = useState([]);
   const {userId} = useContext(UserType);
+  const [friends, setFriends] = useState([]);
 
   useEffect(() => {
     (async () => {

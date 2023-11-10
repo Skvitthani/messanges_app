@@ -76,9 +76,9 @@ const HomeScreen = () => {
       <View style={styles.userView}>
         <FlatList
           data={userData}
-          renderItem={({item}) => {
+          renderItem={({item, index}) => {
             return (
-              <View style={styles.containerView}>
+              <View style={styles.containerView} key={index}>
                 <Image source={{uri: item?.image}} style={styles.imageStyle} />
                 <View style={styles.textView}>
                   <Text style={styles.nameFont}>{item?.name}</Text>
@@ -113,9 +113,6 @@ const HomeScreen = () => {
             );
           }}
         />
-        {/* {userData?.map((item, index) => (
-          <Users item={item} key={index} />
-        ))} */}
       </View>
     </SafeAreaView>
   );

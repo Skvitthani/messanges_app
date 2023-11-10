@@ -33,9 +33,11 @@ function MyTabBar({state, descriptors, navigation}) {
             navigation.navigate(route.name, route.params);
           }
         };
+        const uniqueKey = `tab_${index}`;
 
         return (
           <TouchableOpacity
+            key={uniqueKey}
             activeOpacity={0.7}
             onPress={onPress}
             style={styles.tabButtonView}>

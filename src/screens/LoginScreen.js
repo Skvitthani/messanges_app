@@ -8,8 +8,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 const LoginScreen = ({navigation}) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  let name = 'abcd';
+  const [email, setEmail] = useState(`${name}@gmail.com`);
+  const [password, setPassword] = useState(name);
 
   const onLoginPress = async () => {
     const authStatus = await messaging().requestPermission();

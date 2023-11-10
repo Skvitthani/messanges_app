@@ -111,25 +111,16 @@ const ChatMessagesScreen = ({route, navigation}) => {
     }
   };
 
-  const onSendTextMessage = async (messageType, imageURL) => {
+  const onSendTextMessage = async () => {
     try {
-      const formData = new FormData();
-      formData.append('senderId', userId);
-      formData.append('recepientId', recepientId);
+      let messageData = {
+        senderId: userId,
+        recepientId: recepientId,
+        messageType: 'text',
+        messageText: message,
+      };
 
-      if (messageType === 'image') {
-        formData.append('messageType', 'image');
-        formData.append('imageFile', {
-          uri: imageURL,
-          name: 'image.jpg',
-          type: 'image/jpeg',
-        });
-      } else {
-        formData.append('messageType', 'text');
-        formData.append('messageText', message);
-      }
-
-      const res = await messageAPI(formData);
+      const res = await messageAPI(messageData);
       if (res) {
         setMessage('');
         const request = {
@@ -217,7 +208,7 @@ const ChatMessagesScreen = ({route, navigation}) => {
           <ButtonConst
             disabled={message === ''}
             title={'Send'}
-            onPress={() => onSendTextMessage('text')}
+            onPress={() => onSendTextMessage()}
             titleStyle={styles.sendTextStyle}
             buttonStyle={[
               styles.sendButtonStyle,

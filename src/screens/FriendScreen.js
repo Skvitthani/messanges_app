@@ -1,6 +1,13 @@
+import {
+  Text,
+  Image,
+  FlatList,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
 import {UserType} from '../components/userContext';
-import FriendRequest from '../components/FriendRequest';
-import {SafeAreaView, StyleSheet, Text} from 'react-native';
+import ButtonConst from '../components/ButtonConst';
 import React, {useContext, useEffect, useState} from 'react';
 import {acceptFriendAPI, getfriendRequest} from '../utils/services/APIAction';
 
@@ -34,14 +41,28 @@ const FriendScreen = () => {
 
   return (
     <SafeAreaView style={styles?.container}>
-      {friends?.length > 0 ? <Text>Your Friend Request</Text> : null}
-      {friends?.map((item, index) => (
-        <FriendRequest
-          key={index}
-          item={item}
-          onAcceptFriendrequest={onAcceptFriendrequest}
-        />
-      ))}
+      <FlatList
+        data={friends}
+        renderItem={({item}) => {
+          return (
+            <TouchableOpacity style={styles.containerView}>
+              <Image source={{uri: item?.image}} style={styles.imageStyle} />
+              <Text style={styles.nameFont}>
+                {item?.name} sent you a friend request
+              </Text>
+              <ButtonConst
+                title={'Accept'}
+                titleStyle={styles.buttonFont}
+                buttonStyle={styles.acceptButtonStyle}
+                onPress={() => onAcceptFriendrequest(item?._id)}
+              />
+            </TouchableOpacity>
+          );
+        }}
+        ListEmptyComponent={() => {
+          return <Text>No Data Found</Text>;
+        }}
+      />
     </SafeAreaView>
   );
 };
@@ -52,5 +73,31 @@ const styles = StyleSheet.create({
   container: {
     padding: 10,
     marginHorizontal: 12,
+  },
+  containerView: {
+    marginVertical: 10,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  acceptButtonStyle: {
+    padding: 10,
+    borderRadius: 6,
+    backgroundColor: '#0066b2',
+  },
+  buttonFont: {
+    color: 'white',
+    textAlign: 'center',
+  },
+  imageStyle: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+  },
+  nameFont: {
+    flex: 1,
+    fontSize: 15,
+    marginLeft: 10,
+    fontWeight: 'bold',
   },
 });

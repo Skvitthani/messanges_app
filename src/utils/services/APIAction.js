@@ -110,10 +110,24 @@ export const getReceiverProfile = async request => {
 };
 
 export const messageAPI = async request => {
+  console.log('request', request);
   return new Promise(async (resolve, reject) => {
     try {
+      // var myHeaders = new Headers();
+      // myHeaders.append('Content-Type', 'application/json');
+      // var raw = JSON.stringify(request);
+      // var requestOptions = {
+      //   method: 'POST',
+      //   headers: myHeaders,
+      //   body: raw,
+      //   redirect: 'follow',
+      // };
+      // fetch('http://192.168.24.107:3000/messages', requestOptions)
+      //   .then(response => response.text())
+      //   .then(result => console.log(result))
+      //   .catch(error => console.log('error', error));
       const response = await axios.post(`${base_URL}/messages`, request);
-
+      console.log('response', response?.data);
       resolve(response?.data);
     } catch (error) {
       console.log('error on messageAPI', error);

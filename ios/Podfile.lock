@@ -190,11 +190,11 @@ PODS:
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (3.1.1)
   - libevent (2.1.12)
-  - nanopb (2.30909.0):
-    - nanopb/decode (= 2.30909.0)
-    - nanopb/encode (= 2.30909.0)
-  - nanopb/decode (2.30909.0)
-  - nanopb/encode (2.30909.0)
+  - nanopb (2.30909.1):
+    - nanopb/decode (= 2.30909.1)
+    - nanopb/encode (= 2.30909.1)
+  - nanopb/decode (2.30909.1)
+  - nanopb/encode (2.30909.1)
   - OpenSSL-Universal (1.1.1100)
   - PromisesObjC (2.3.1)
   - RCT-Folly (2021.07.22.00):
@@ -846,7 +846,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 202e7a9f5128accd11160fb9c19612de1911aa19
   GTMSessionFetcher: e8647203b65cee28c5f73d0f473d096653945e72
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
+  nanopb: d4d75c12cd1316f4a64e3c6963f879ecd4b5e0d5
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1

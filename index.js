@@ -90,7 +90,6 @@ const createToken = (userId) => {
 // endpoint for login perticular user
 app.post("/login", (req, res) => {
   const { email, password, fcmToken } = req.body;
-  console.log("fcmToken", fcmToken);
   if (!email || !password) {
     return res.status(404).json({ message: "Email and password required" });
   }
@@ -108,12 +107,8 @@ app.post("/login", (req, res) => {
       user.fcmToken = fcmToken;
       user
         .save()
-        .then((res) => {
-          console.log("res:::", res);
-        })
-        .catch((err) => {
-          console.log("err :::", err);
-        });
+        .then((res) => {})
+        .catch((err) => {});
 
       const token = createToken(user._id);
 
@@ -233,6 +228,7 @@ const upload = multer({ storage: storage });
 //endpoint to post Messages and store it in the backend
 app.post("/messages", upload.single("imageFile"), async (req, res) => {
   try {
+    console.log("req.body", req.body);
     const { senderId, recepientId, messageType, messageText } = req.body;
 
     const newMessage = new Message({
@@ -301,15 +297,12 @@ app.post("/delete-messages", async (req, res) => {
 app.get("/friend-request/sent", async (req, res) => {
   try {
     const id = req.query.userId;
-    console.log("id", id);
 
     const user = await User.findById(id)
       .populate("sendFriendRequest", "name email image")
       .lean();
-    console.log("user", user);
     if (user !== null) {
       const sendFriendRequest = user.sendFriendRequest;
-      console.log("sendFriendRequest", sendFriendRequest);
       res.json(sendFriendRequest);
     }
   } catch (error) {
